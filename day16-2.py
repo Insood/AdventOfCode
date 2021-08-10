@@ -1,4 +1,6 @@
 import itertools
+import numpy as np
+import pdb
 
 class Validator:
   def __init__(self, raw_string):
@@ -15,51 +17,58 @@ class Validator:
 
 with open("day16.txt") as f:
   raw = f.read()
-  definition, my_ticket, nearby = raw.split("\n\n")
+  definition, my_ticket_str, nearby = raw.split("\n\n")
 
-my_ticket = my_ticket.split("\n")[1].split(",")
+my_ticket = [int(x) for x in my_ticket_str.split("\n")[1].split(",")]
 nearby = nearby.split("\n")[1:]
 
 validators = [Validator(raw) for raw in definition.split("\n")]
 
-invalid_values = []
 valid_tickets = []
+
 for line in nearby:
-  values = [int(x) for x in line.split(",")]
+  ticket = [int(x) for x in line.split(",")]
   valid_ticket = True
-  for value in values:
+  for value in ticket:
     if not any([v.validate(value) for v in validators]):
-      invalid_values.append(value)
       valid_ticket = False
   if valid_ticket:
-    valid_tickets.append(values)
+    valid_tickets.append(ticket)
 
-print(valid_tickets)
+values = np.array(valid_tickets)
 
-my_ticket_with_fields = {}
+validator_matches = []
+for ix, validator in enumerate(validators):
+  valid_for_columns = []
+  for column_ix in range(0, len(validators)):
+    matches_all = all([validator.validate(v) for v in values[:,column_ix]])
+    if matches_all:
+      valid_for_columns.append(column_ix)
+  validator_matches.append([validator, valid_for_columns])
 
-counter = 0
-for validator_permutation in itertools.permutations(validators):
-  counter += 0
-  if counter % 10000:
-    print(".",end="")
-    
-  all_valid = True
-  for ticket in valid_tickets:
-    if not all([validator.validate(value) for validator, value in zip(validator_permutation, ticket)]):
-      all_valid = False
-      break
+validator_matches.sort(key=lambda values: len(values[1]))
 
-  if all_valid:
-    for validator, my_ticket_value in zip(validator_permutation, my_ticket):
-      my_ticket_with_fields[validator.name] = my_ticket_value
-    break
+assigned_columns = []
+assigned_validators = {}
 
-print(my_ticket_with_fields)
+for validator, possible_columns in validator_matches:
+  available_columns = [col for col in filter(lambda c: c not in assigned_columns, possible_columns)]
+  print(f"{possible_columns} -> {available_columns}")
 
-answer = 1
-for k,v in my_ticket_with_fields.items():
-  if "departure" in k:
-    answer *= v
+  if len(available_columns) != 1:
+    raise RuntimeError("couldn't sort")
+  column_for_validator = available_columns[0]
+  assigned_columns.append(column_for_validator)
+  print(f"{validator} - {column_for_validator}")
+  assigned_validators[validator] = column_for_validator
 
-print(answer)
+result = 1
+for validator, col_ix in assigned_validators.items():
+  if not "departure" in validator.name:
+    continue
+  
+  print(validator)
+  print(my_ticket[col_ix])
+  result = result*my_ticket[col_ix]
+
+print(result)
