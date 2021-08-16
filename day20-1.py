@@ -99,3 +99,5 @@ for rows in range(0,dim):
   permutation_matrix.append([None]*dim)
 
 fill_matrix(tile_id_matrix, permutation_matrix, 0, tiles)
+
+# Test
