@@ -56,11 +56,6 @@ class Tile:
     borderless = data[1:-1,1:-1]
     return borderless
 
-    #list2d = borderless.tolist()
-
-    #output = ["".join([str(i) for i in row]).replace("0",".").replace("1","#") for row in list2d]
-    #return output
-
 def tile_fits(matrix, shape, ix, tile):
   row, col = np.unravel_index(ix, shape)
   fits = True
@@ -147,4 +142,4 @@ if __name__ == "__main__":
   img = build_image(tiles, tile_id_matrix, permutation_matrix)
   print(img)
   outfilename = f"{filename}.out"
-  np.save(outfilename, img)
+  np.savetxt(outfilename, img)
