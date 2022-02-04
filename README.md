@@ -9,4 +9,4 @@ This repository contains solutions in various languages for past and present Adv
 | ----------- | ----------- | ------------------------- |
 | 2019        | 2/25        | Elixir (100%)             |
 | 2020        | 25/25       | Ruby (20%) & Python (80%) |
-| 2021        | 11/25       | Javascript (100%) + Ruby  |
+| 2021        | 12/25       | Javascript (100%) + Ruby  |

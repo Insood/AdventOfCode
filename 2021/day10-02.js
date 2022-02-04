@@ -1,7 +1,4 @@
-const { match } = require('assert');
 const fs = require('fs');
-const { syncBuiltinESMExports } = require('module');
-const { openStdin } = require('process');
 
 const input_file = process.argv.slice(2,3)[0];
 
