@@ -46,5 +46,6 @@ function count_elements(polymer) {
 let polymer = starting_polymer;
 for (let i = 0; i < 10; i++) {
   polymer = step(polymer);
-  console.log(count_elements(polymer));
 }
+
+console.log(count_elements(polymer));

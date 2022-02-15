@@ -79,7 +79,8 @@ function score(pairs, starting_polymer) {
 
 let pairs = build_pairs(starting_polymer);
 
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 40; i++) {
   pairs = step(pairs);
-  console.log(score(pairs, starting_polymer))
 }
+
+console.log(score(pairs, starting_polymer))
