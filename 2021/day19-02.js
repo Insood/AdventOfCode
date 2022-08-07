@@ -138,4 +138,25 @@ let clouds = scans.map(scan => scan['coordinates']);
 let clouds_with_rotations = generate_rotations(clouds)
 let [global_cloud, beacon_count, scanner_locations] = assemble_global_cloud(clouds_with_rotations);
 
-console.log(beacon_count)
+function manhattan_distance(a,b){
+  return Math.abs(b[0] - a[0]) + Math.abs(b[1] - a[1]) + Math.abs(b[2] - a[2]);
+}
+
+function max_distance(scanner_locations){
+  let max = 0;
+
+  for(let i = 0; i < scanner_locations.length; i++){
+    for(let j = 0; j < scanner_locations.length; j++){
+      if(i == j) { continue; }
+      
+      let a = scanner_locations[i];
+      let b = scanner_locations[j];
+      let dist = manhattan_distance(a,b);
+      if(dist > max) { max = dist; }
+    }
+  }
+  return max;
+}
+
+let max = max_distance(scanner_locations)
+console.log(max);
