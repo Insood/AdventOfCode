@@ -101,6 +101,7 @@ function point_cloud_overlap_with_transform(global_cloud, cloud_rotation){
 
 function assemble_global_cloud(cloud_rotations){
   let global_cloud = cloud_rotations.shift()[0]; // First rotation of the 1st scanner
+  let scanner_locations = [];
 
   while(cloud_rotations.length > 0){
     console.log('Compacting cloud.. Clouds left: ' + cloud_rotations.length )
@@ -110,6 +111,7 @@ function assemble_global_cloud(cloud_rotations){
 
       if(!transform) { continue; }
 
+      scanner_locations.push(transform);
       let aligned_cloud = rotated_points.map(point => math.add(point, transform));
       aligned_cloud.forEach( point => global_cloud.push(point));
       global_cloud = global_cloud = _.uniqWith(global_cloud, _.isEqual)
@@ -121,6 +123,7 @@ function assemble_global_cloud(cloud_rotations){
 
   console.log(global_cloud);
   console.log(global_cloud.length)
+  console.log(scanner_locations);
 }
 
 function generate_rotations(clouds){
